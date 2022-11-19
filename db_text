@@ -1,0 +1,426 @@
+--create database
+create database Amit
+
+--create table
+	create table studint(
+	id int identity,
+	name varchar(50) not NULL,
+	salary money not Null,
+	primary key(id)
+	)
+
+--edit name database 
+	 alter database AmitO 
+	 modify name=Amit
+
+
+--add columns into table
+	 alter table studint
+	 add gender bit ,
+	  birthday date
+
+--delete database or table
+	 drop database NameDB
+	 drop table NameTable
+
+
+--insert into table
+insert into studint 
+(name,salary,gender,birthday) Values
+('abdo','200',1,'2001-6-5'),
+('ahmed','1000',1,'2009-12-8'),
+('mena','3000',0,'2005-8-2'),
+('mohamed','500',1,'1996-3-5'),
+('hadeer','1200',0,'2014-2-8'),
+('sara','4500',0,'2015-8-2')
+
+--print columns name
+select *from studint
+where 1=0
+
+--update value in table with id 
+update studint 
+set salary ='6000'
+where id=6
+
+--delete values from table with id 
+delete from studint
+where id=2
+
+--declare variables 
+declare @x int=1
+---------------------------------------------
+select select select select select 
+ --select all data from table 
+select *from studint
+
+--select columns from talbe
+select id from studint
+select name , salary from studint
+
+--select columns from talbe another NameColumns
+select name as Fullname ,salary as TotalSalary from studint
+
+
+--select data from other database 
+select [Amit].[dbo].[studint].name from [Amit].[dbo].[studint]
+
+--select order by 
+----small to larg
+select *from studint
+order by salary asc
+----larg to small
+select *from studint
+order by salary desc
+
+
+--select with condition
+select name from studint
+where id =4
+
+select *from studint 
+where id!=5
+
+select *from studint 
+where id =4 or id =3
+
+select *from studint
+where id in (3,5)
+
+select *from studint
+where id >=4
+
+select *from studint
+where id between 4 and 8
+
+select *from studint
+where birthday is Null
+
+
+--selected String--
+select  *from studint
+where name like 'a%'
+
+--char number of name
+select  *from studint
+where name like '___'
+
+select  *from studint
+where name like '_a%'
+
+select  *from studint
+where name like '%a%'
+
+--start with s or m or a 
+select  *from studint
+where name like '[sma]%'
+
+select  *from studint
+where name like '[a-m]%'
+--not 
+select  *from studint
+where name like '[^sma]%'
+
+select  *from studint
+where name like '[^a-m]%'
+
+---birthday---
+
+select  *from studint
+where year(birthday)>2000
+
+select  *from studint
+where month(birthday)=8
+
+select  *from studint
+where datepart(year,birthday)=2001
+
+--with QUARTER
+select  *from studint
+where datepart(QUARTER,birthday)=3
+
+--with weekDay
+select  *from studint
+where datepart(WEEKDAY,birthday)=3
+
+
+---default cases
+
+select name,
+case gender
+when 0 then 'female'
+when 1 then 'male'
+else 'nothing'
+end GenderState
+ from studint
+
+ select name,salary,
+case 
+when salary <3000 then 'low'
+when salary >= 3000 then 'high'
+else 'nothing'
+end TotalSalary
+ from studint
+
+
+
+----------------------------------------------------------
+JOIN JOIN JOIN JOIN JOIN JOIN
+
+create database Company 
+create table Department(
+ id int identity,
+ depName varchar(50) Null,
+ primary key(id)
+ )
+ create table Manger(
+ id int identity,
+ manName varchar(50) NULL,
+ Dep_id int,
+ foreign key(Dep_id) REFERENCES Department(id), 
+ primary key(id)
+ )
+ create table Project(
+ id int identity,
+ projectName varchar(50) NULL,
+ projectLocation varchar(50) NULL,
+ primary key(id)
+ )
+ create table Employee(
+ id int identity,
+ empName varchar(50)NULL,
+ poj_id int,
+ man_id int,
+ foreign key(poj_id) REFERENCES project(id),
+ foreign key(man_id) REFERENCES Employee(id),
+ primary key(id)
+ )
+ 
+insert into Employee(
+empName,poj_id,man_id
+)Values
+('Ahmed',1,3),
+('Ali',1,3),
+('Mohamed',1,3),
+('Ayman',2,4),
+('Mona',3,4),
+('Sara',4,5),
+('Aya',NUll,5),
+(Null,5,5),
+('Yasmin',5,5)
+insert into Project(projectName,projectLocation)Values
+('A','AA'),
+('B','BB'),
+('C','CC'),
+('D','DD'),
+('E','EE'),
+('F','FF'),
+('S','SS'),
+('V','VV'),
+('N','NN')
+
+select *from Employee
+select *from Project
+
+ -- join = inner join = inner
+select empName , projectName
+from Employee join Project
+on Employee.poj_id=Project.id
+--cross join 
+
+select empName , projectName
+from Employee , Project
+where Employee.poj_id=Project.id
+
+
+---outer join = left outer join
+
+select empName , projectName
+from Employee left outer join Project
+on Employee.poj_id = Project.id
+
+---outer join = right outer join
+
+select empName , projectName
+from Employee right outer join Project
+on Employee.poj_id = Project.id
+
+---outer join = full outer join
+
+select empName , projectName
+from Employee full outer join Project
+on Employee.poj_id = Project.id
+
+--self join 
+
+select emp.EmpName  as Employee , mgr.EmpName as Manager
+from Employee emp join Employee mgr
+on emp.man_id =mgr.id
+
+--name relation
+constraint Fk_Between_emp_dep
+
+----------------------------------------------------------------
+----Aggregating functions----
+
+select max (salary) from studint
+select min(salary) from studint
+select avg(salary) from studint
+select id,name from studint
+select count(id) as counterStudint from studint 
+select sum (salary) from studint
+
+--select
+--from
+--where or on 
+--Group by 
+--Having
+--order by
+
+
+--print name and depName
+select name ,depName
+from studint join Department
+on studint.depId = Department.id
+
+
+--totoal salary for department
+select sum(salary) as TotalSalary, depName
+from studint join Department
+on studint.depId = Department.id
+group by (depName)
+having sum(salary)>=6000  
+order by sum(salary) desc 
+
+-- top 3 salary
+select top (3) max (salary) from studint
+group by studint.name
+order by max(salary) desc
+
+select top (4) max (salary) from studint
+group by studint.name
+having max(salary) >6000
+order by max(salary) desc
+
+
+------built in function-------
+
+select upper(name) from studint
+select lower(name) from studint
+select len(name) from studint --number of letters
+select LTRIM(name) from studint --delete space 
+select SUBSTRING(name,1,3) from studint --print name from to 
+select distinct (name) from studint -- delete same data
+select CONCAT(name,'   ',salary)from studint --print name and salary in one column
+
+select GETDATE() --getDate Now
+
+select CHOOSE (2,salary,gender)from studint --choose index from list
+
+select ISNUMERIC(salary) from studint --Is number?
+
+select salary,
+iif(salary>6000,'heigh','low')
+from studint
+
+select ISNULL(salary,1100) from studint --print with insert into  isnull 
+
+select parse('2005-3-4' as date using 'AR-EG')
+select TRY_PARSE('5-6-2005' as date using 'AR-EG')
+
+---------------------------------------------------------
+---------views--------
+create view firstView
+as 
+select salary ,id from studint 
+where id>5   --condition
+
+select *from firstView
+
+
+------
+
+create view secView    --relation view
+as
+SELECT dbo.studint.Name, dbo.Department.depName
+FROM  dbo.studint INNER JOIN dbo.Department
+ON dbo.studint.depId = dbo.Department.id
+
+select *from secView
+
+
+--schemabinding
+
+create view thirView with schemabinding  --when edit in column show wrong message
+as
+select name from studint
+
+select *from thirView
+
+--delete view
+drop view viewName
+
+-----------procedures-----------
+create proc getStudent
+as
+select name as StuName from studint
+execute getStudent
+
+--insert proc
+create proc InsertDataStudint
+@name varchar(50),@salary int
+as insert into studint(name,salary)values(@name,@salary)
+
+execute InsertDataStudint 'sad',255
+
+--proc with condition
+create proc getStudintwithId 
+@id int
+as
+select *from studint
+where id =@id
+
+execute getStudintwithId 3 
+
+ --edit proc
+ Alter proc getStudintwithId
+ @id int =4
+ as
+ select *from studint
+ where id=@id
+
+ execute getStudintwithId
+
+ ----------------
+ create proc getStudintbyName
+ @name varchar(20)
+ as
+ select *from studint
+ where name like @name+'%'
+
+ execute getStudintbyName 'y'
+
+ --------------------------------
+ --update proc
+ create proc UpdateStudint
+ @name varchar(50),
+ @salary int,
+ @id int
+ as
+ update studint
+ set name=@name,salary=@salary
+ where id=@id
+ 
+ execute UpdateStudint 'badr',500,10
+
+ -------
+ --delete data using proc
+ create proc DeleteDataFromStudint
+ @id int
+ as
+ delete from Studint
+ where id =@id
+
+ execute DeleteDataFromStudint 11
+
+ select *from studint

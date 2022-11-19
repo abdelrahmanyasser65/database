@@ -1,0 +1,94 @@
+Create Database University
+Create table Employees(
+id int identity,
+empName varchar(50) NUll,
+empSalary money Null,
+empGender bit Null,
+empBirthday Date Null,
+empAdress varchar(50) Null,
+PRIMARY KEY(id),
+)
+
+
+Create table projects(
+id int identity,
+proName varchar(50)Null,
+proLocation varchar(50)Null,
+Primary Key(id),
+)
+
+Create table Depertments(
+id int identity,
+dptName varchar(50)NULL,
+Primary key(id)
+)
+
+
+insert into Employees(
+empName,empSalary,empGender,empBirthday,empAdress
+) Values
+('Abdelrahman',400,1,'2001-6-5','cario'),
+('Haneen',500,0,'2001-12-30','madinah'),
+('Abdullah',900,1,'1999-4-5','Alx'),
+('Ahmed',1200,1,'2009-12-5','cario'),
+('Fatma',200,0,'1970-4-20','Benha'),
+('Sad',900,1,'2005-7-1','Tanta'),
+('Nada',2000,0,'1995-3-20','Benha'),
+('omar',750,0,'2004-12-20','madinah')
+
+insert into projects(
+proName,proLocation
+)Values
+('java','c'),
+('paython','D'),
+('c#','c'),
+('Flutter','X'),
+('Dart','D'),
+('JS','c')
+insert into Depertments(dptName)Values
+('Computer Science'),
+('Chemistry'),
+('Physics'),
+('plants'),
+('Geology'),
+('physical chemistry'),
+('Nano'),
+('Bio Technology')
+select *from Employees
+select *from projects
+select *from Depertments
+select id from Employees
+
+select  *from Employees
+where id =33
+
+
+select *from Employees 
+order by empSalary asc
+
+select *from Employees 
+order by empSalary desc
+
+select empName ,
+case empGender
+when 0 then 'f'
+when 1 then 'm'
+else 'no'
+end GenderState
+from Employees
+
+select empName,empSalary,
+case empSalary
+when empSalary < '400' then 'low'
+else 'not'
+end totoal
+from Employees
+
+
+select empName as FullName from Employees
+select empSalary as Totalsalary from Employees
+select *from Employees 
+where year(empBirthday)=2001
+select empName from Employees
+where empName like  '%a%'
+select *from Employees
