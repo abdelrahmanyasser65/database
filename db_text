@@ -424,3 +424,108 @@ execute getStudintwithId 3
  execute DeleteDataFromStudint 11
 
  select *from studint
+ -----------------------------------------------------------
+
+ 
+
+--------trigger----
+--event =>action
+--create trigger Triggername on tableName
+--insert    of || --for || --- after  --action
+--as 
+--code
+
+-----instead of ----------
+
+create trigger insOf on employee
+instead of delete 
+as 
+select *from Employee
+
+delete from Employee
+
+--------- for-----------
+create trigger updateDatefor on project
+for update
+as 
+print 'updating occure on project table'
+
+update Project set projectName ='AAA' where id =9
+
+-------after------------
+--log data
+
+create table LogData(
+id int identity,
+tableName varchar(50),
+actionType varchar(50),
+actionDateTime datetime,  --GATDATE()
+columnName varchar(50),
+oldValue varchar(50),
+newValue varchar(50),
+primary key(id)
+)
+
+---After insert
+
+create trigger logDataTable on project
+after insert 
+as 
+declare @pName varchar(50)= (select projectName from inserted)
+declare @pLocation varchar(50)=(select projectLocation from inserted)
+
+insert into LogData(tableName,actionType
+,columnName,newValue)
+values 
+('project','insert','projectName',@pName)
+insert into LogData(tableName,actionType
+,columnName,newValue)
+values 
+('project','insert','projectLocation',@pLocation)
+
+insert into Project (projectLocation,projectName)values
+('R','rr')
+
+select *from LogData --2 row add
+
+--After update
+
+create trigger UpLogDataTable on project
+after update
+as 
+declare @oldPName varchar(50)= (select projectName from deleted)
+declare @oldpLocation varchar(50)=(select projectLocation from deleted)
+
+declare @newpName varchar(50)= (select projectName from inserted)
+declare @newpLocation varchar(50)=(select projectLocation from inserted)
+
+insert into LogData(tableName,actionType
+,columnName,newValue,oldValue)
+values 
+('project','update','projectName',@newpName,@oldPName)
+insert into LogData(tableName,actionType
+,columnName,newValue,oldValue)
+values 
+('project','update','projectLocation',@newpLocation,@oldpLocation)
+
+update Project
+set projectName ='MD', projectLocation='cairo'
+where id =10
+select *from LogData --2 row add
+
+
+
+
+-------------------transaction--------------
+
+begin tran
+select *from Project
+
+if @@ERROR >0 --1 to 11 sql ## 12 to 24 user 
+rollback
+else
+commit
+
+
+
+
