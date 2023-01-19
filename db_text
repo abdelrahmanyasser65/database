@@ -260,6 +260,12 @@ on emp.man_id =mgr.id
 --name relation
 constraint Fk_Between_emp_dep
 
+---three join
+select studint.f.name ,studint.l.name
+from studint
+join studint on studint.id=studint_souce.id
+join course on cource.id =studint.course_id;
+
 ----------------------------------------------------------------
 ----Aggregating functions----
 
@@ -369,7 +375,8 @@ execute getStudent
 --insert proc
 create proc InsertDataStudint
 @name varchar(50),@salary int
-as insert into studint(name,salary)values(@name,@salary)
+as 
+insert into studint(name,salary)values(@name,@salary)
 
 execute InsertDataStudint 'sad',255
 
@@ -521,10 +528,72 @@ select *from LogData --2 row add
 begin tran
 select *from Project
 
-if @@ERROR >0 --1 to 11 sql ## 12 to 24 user 
+if @@ERROR >0    --1 to 11 sql ## 12 to 24 user 
 rollback
 else
 commit
+
+-----------
+create database unvirsty1
+
+create table unvirsty2(
+[Faculty][nvarchar](50) NULL,
+[Free Space][nvarchar](50) NUll
+)
+create table Science(
+id int primary key identity,
+[Name] [nvarchar](50) NULL,
+[Specialization] [nvarchar] (50) NULL,
+[Gender] [nvarchar] (10) null,
+[birthdate][date] null,
+[Address] [nvarchar] (50)
+)
+create table Engineering(
+id int primary key identity,
+[Name] [nvarchar](50) NULL,
+[Specialization] [nvarchar] (50) NULL,
+[Gender] [nvarchar] (10) null,
+[birthdate][date] null,
+[Address] [nvarchar] (50)
+)
+ insert into [dbo].[unvirsty2] values('Science',200)
+ insert into [dbo].[unvirsty2] values('Engineering',170)
+
+insert into [dbo].[Engineering] values('samir','android','male','2001-02-06','cairo')
+insert into [dbo].[Engineering] values('essam','CS','male','2001-02-06','cairo')
+insert into [dbo].[Engineering] values('abdo','android','male','2000-02-06','cairo')
+insert into [dbo].[Science] values('3adla','CS','male','2000-02-06','zifta')
+insert into [dbo].[Science] values('sherif','web','male','2001-02-06','cairo')
+insert into [dbo].[Science] values('mona','web','female','2000-02-06','banha')
+
+
+
+begin transaction
+  insert into [dbo].[Engineering] values('samir','CS','male','2004-03-06','banha')
+  if(@@ERROR<>0)
+  rollback transaction
+  update unvirsty2 set [Free Space]=[Free Space]-1 where Faculty='Engineering'
+  if(@@ERROR<>0)
+  rollback transaction
+  if((select [Free Space] from unvirsty2 where Faculty='Engineering')<=0)
+  rollback transaction
+commit transaction
+
+
+begin transaction
+  insert into [dbo].[Science] values('samir','CS','male','2004-03-06','banha')
+  if(@@ERROR<>0)
+  rollback transaction
+  update unvirsty2 set [Free Space]=[Free Space]-1 where Faculty='Science'
+  if(@@ERROR<>0)
+  rollback transaction
+  if((select [Free Space] from unvirsty2 where Faculty='Science')<=0)
+  rollback transaction
+commit transaction
+
+select *from  unvirsty2
+select *from  Science
+select *from  Engineering
 
 
 

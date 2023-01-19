@@ -1,0 +1,477 @@
+Create DataBase Baber 
+
+Create table Users(
+id int identity ,
+name varchar(20) NOT NULL,
+age int NOT NULL,
+email varchar(66) NOT NULL,
+password varchar(23) NOT NULL,
+address varchar(333) NOT NULL,
+phone varchar(12) NOT NULL,
+primary key(id)
+)
+
+Create table Admin(
+id int identity,
+name varchar(33)NOT NULL,
+password varchar(66)NOT NULL,
+email varchar(50) NOT NULL,
+job varchar(50) NOT NULL,
+image varchar(90) NOT NULL,
+primary key(id)
+)
+
+Create table Employees(
+id int identity,
+name varchar(33)NOT NULL,
+email varchar(250) NOT NULL,
+adminID int NOT NULL,
+Foreign key(adminID) References Admin(id),
+primary key(id)
+)
+
+Create table Category(
+id int identity,
+name varchar(200) NOT NULL,
+primary key(id)
+)
+
+create table barbers(
+id int identity,
+name varchar(33)NOT NULL,
+phone varchar(22) NOT NULL,
+address varchar(66) NOT NULL,
+password varchar(50) NOT NULL,
+image varchar(122) NOT NULL,
+image2 varchar(255)NOT NULL,
+categoryID int NOT NULL,
+Foreign Key(categoryID) References Category(id),
+primary key(id)
+)
+
+create table rating(
+id int identity,
+userId int NOT NULL,
+barberId int NOT NULL,
+rating int NOT NULL,
+foreign key(userId) References Users(id),
+foreign key(barberId) References barbers(id),
+primary key(id)
+)
+
+create table Posts(
+id int identity,
+price int NOT NULL,
+description varchar(200) NOT NULL,
+image varchar(255) NOT NULL,
+status varchar(50) NOT NULL,
+barberId int NOT NULL,
+foreign KEy(barberId) References barbers(id),
+primary key(id)
+)
+
+create table payment(
+id int identity,
+postId int NOT NULL,
+userId int NOT NULL,
+data varchar(50)NOT NULL,
+foreign key(postId) references posts(id),
+foreign key(userId) references Users(id),
+primary key(id)
+)
+
+alter database Baber
+modify name=BABER
+
+alter table Category
+add des varchar
+ 
+drop DataBase Baber
+drop table Category
+
+ALTER TABLE Category
+DROP COLUMN des
+
+insert into Users(name,age,email,password,address,phone)
+values ('name1',21,'abdo@gamil','password1','benha','phone1'),
+('name2',22,'abdo@gamil','password2','address2','phone2'),
+('name3',23,'abdo@gamil','password3','address3','phone3'),
+('name4',31,'abdo@gamil','password4','benha','phone4'),
+('name5',43,'abdo@gamil','password5','address5','phone5'),
+('name6',65,'abdo@gamil','password6','address6','phone6')
+
+insert into Category(name)values
+('lab2'),
+('lab3'),
+('lab4'),
+('lab5'),
+('lab6')
+
+insert into barbers(name,phone,address,password,image,image2,categoryID)values
+('name1','phone1','address1','pas1','image1','image21',2),
+('name2','phone2','address2','pas2','image2','image21',4),
+('name3','phone3','address3','pas3','image3','image212',1),
+('name4','phone4','address4','pas4','image4','image214',6),
+('name5','phone5','address5','pas5','image5','image215',3),
+('name6','phone6','address6','pas6','image6','image216',5)
+
+update Users 
+set address='address1'
+where id =1
+
+delete from Users
+where id =4
+
+select *from Users
+
+select id , name from Users
+
+select name as FullName ,email as Email from Users
+
+select*from Users
+order by age asc
+
+select *from Users
+order by age desc
+
+select name from Users
+where id =3
+
+select *from Users
+where id!=2
+
+select *from Users
+where id =4 or id =3
+
+--3 ,6
+select *from Users
+where id in (3,6)
+
+select *from Users
+where id>=3
+
+select *from Users
+where id between 4 and 6
+
+select *from Users
+where name is null
+
+select *from Users
+where name like 'n%'
+
+select *from Users
+where name like '___'
+
+select *from Users
+where name like '_a%'
+
+select *from Users
+where name like '%n%'
+
+--start with s , m or n 
+select *from Users
+where name like '[smn]%'
+
+select *from Users
+where name like '[a-q]%'
+
+select *from Users
+where name like '[^sma]%'
+
+select *from Users
+where name like '[^a-q]%'
+
+select name,
+case password
+when 0 then 'female'
+when 1 then 'male'
+else 'nothing'
+end GenderState
+ from Users
+
+select name , age,
+case  
+when age>30 then 'big '
+when age<30 then 'small'
+else 'nothing'
+end AgeState
+from Users
+
+--join=inner join =inner
+ 
+ select address,Category.name
+ from barbers join Category
+ on barbers.categoryID=Category.id
+
+ --cross join
+
+ select phone , Category.name
+ from barbers,Category
+ where barbers.categoryID=category.id
+
+ --الترتيب من الشمال 
+ --left outer join or right outer join
+ select password , Category.name
+ from barbers left outer join Category
+ on barbers.categoryID=category.id 
+ --الترتيب من اليمين
+ select password , Category.name
+ from barbers right outer join Category
+ on barbers.categoryID=category.id 
+
+ ---outer join = full outer join
+
+select phone , category.name
+from barbers full outer join category
+on barbers.categoryID = category.id
+
+--self join 
+--in seem table 
+select b.name as barbers,m.name as babers2
+from barbers b join barbers m
+on b.categoryID =m.id
+
+select max(age) as max from Users
+select min(age) as min from Users
+select avg(age) as avg from Users
+select count(id) as countUsres from Users
+select sum (age)as sum from Users
+
+select top(3) max(age) from Users
+group by users.name
+order by max(age) desc
+
+select top(3) min(age) from Users
+group by Users.name
+having min(age)<30
+order by min(age)desc
+
+select upper(name) from Users
+
+select name,
+iif(age>30,'heigh','low')
+from users
+
+create view firstview
+as select id,name,age from Users
+where id >3  --with condition
+
+select *from firstview
+
+create view secView  --relation view
+as 
+select barbers.phone , Category.name
+from barbers inner join Category
+on barbers.categoryID = category.id
+
+select *from secView
+
+drop view firstview
+
+--------procedures-----------
+create proc getUsers
+as 
+select name as UserName from Users
+execute getUsers
+
+--insert proc
+create proc InsertDataCategory
+@name varchar(50) 
+as insert into Category(name)
+values(@name)
+
+execute InsertDataCategory 'lab8'
+
+--proc with condition
+
+create proc getUserswithId
+@id int
+as 
+select *from Users
+where id =@id
+
+execute getUserswithId 4
+
+--edit proc
+alter proc getUserswithId
+@id int=2
+as select *from Users
+where id=@id
+
+execute getUserswithId
+
+------
+create proc getUserbyName
+@name varchar(20)
+as 
+select *from Users
+where name like '%'+@name+'%'
+
+execute getUserbyName 'm'
+
+---------
+--update proc
+create proc updateCategory
+@name varchar(50),
+@id int
+as
+update Category
+set name=@name
+where id=@id
+
+execute updateCategory 'lab7',7
+select *from category
+---------------
+--delete data using proc
+create proc DeleteFromCategory
+@id int
+as
+delete from Category
+where id=@id
+
+execute DeleteFromCategory 7
+select *from category
+
+------------------------------------
+--------trigger----
+--event =>action
+--create trigger Triggername on tableName
+--insert    of || --for || --- after  --action
+--as 
+--code
+
+-----instead of ----------
+create trigger insOf on Category
+instead of delete          --delete = select
+as 
+select *from Category
+
+delete from Category
+---------------
+---for =>print message
+create trigger updateDate on Category
+for update
+as 
+print 'updating occure on category table'
+
+update category set name='lab7e' where id=7
+-------------------------------------------------
+--after--   --craete table log data
+create table LogData(
+id int identity,
+tableName varchar(50),
+actionType varchar(50),
+actionDataTime datetime,  --GatDate()
+culumnName varchar(50),
+oldValue varchar(50),
+newValue varchar(50),
+primary key(id)
+)
+
+create trigger LogDataTable on Category
+after insert
+as 
+declare @cname varchar(50) =(select name from inserted)
+insert into LogData(tableName,actionType,
+culumnName,newValue)values(
+'Category','insert','name',@cname)
+insert into Category(name)values('lab8')
+
+select *from LogData
+
+--after update
+create trigger UpLogDataT on Category
+after update
+as 
+declare @oldname varchar(50)=(select name from deleted)
+declare @newName varchar(50)=(select name from inserted)
+insert into LogData(tableName,actionType,
+culumnName,oldValue,newValue)values(
+'Category','update','name',@oldname,@newName)
+
+update category
+set name='lab11' where id=11
+
+select *from Logdata
+-----------------------------------------
+----------------------------------
+----------------------------
+
+create Database unvirsty 
+
+create table unvirsty(
+id int identity,
+faculty varchar(50) NOT NULL,
+freeSpace varchar(50) NOT NULL,
+primary key(id)
+)
+
+create table Science(
+id int identity,
+name varchar(50) NOT NULL,
+specialzation varchar(50),
+gender varchar(10),
+birthdate date ,
+address varchar(50) ,
+primary key(id)
+)
+
+create table Engieering(
+id int identity,
+name varchar(50) ,
+specialzation varchar(50),
+gender varchar(10),
+birthdate date,
+Address varchar(50),
+primary key(id)
+)
+
+insert into unvirsty values
+('science',200),
+('Engineering',160)
+
+insert into Science values
+('Abdo','flutter','male','2001-6-5','benha'),
+('fatma','web','female','2005-1-5','qaha'),
+('sara','android','female','2000-4-5','benha'),
+('Ahmed','flutter','male','2001-2-5','cario')
+
+insert into Engieering values
+('Abdo','Cs','male','2001-6-5','benha'),
+('sad','Ai','male','2001-6-5','benha'),
+('sama','It','female','2001-6-5','benha')
+
+begin transaction
+insert into Engieering  values ('abdullh','sc','male','2000-4-12','benha')
+if(@@ERROR<>0)
+rollback transaction
+update unvirsty set freeSpace=freeSpace-1 where faculty='Engineering'
+if(@@ERROR<>0)
+rollback transaction
+if((select freespace from unvirsty where faculty='Engineering')<=0)
+rollback transaction
+commit transaction
+
+begin transaction
+insert into Science  values ('abdo','sc','male','2000-4-12','benha')
+if(@@ERROR<>0)
+rollback transaction
+update unvirsty set freeSpace=freeSpace-1 where faculty='science'
+if(@@ERROR<>0)
+rollback transaction
+if((select freespace from unvirsty where faculty='science')<=0)
+rollback transaction
+commit transaction
+
+select *from unvirsty
+select *from Science
+select *from Engieering
+
+
+
+
+
+
+
+
+
