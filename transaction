@@ -1,0 +1,64 @@
+
+---------transaction--------------
+
+create database unvirsty
+
+create table unvirstyData(
+    Faculty varchar(50) Null,
+    freeSpace varchar(50) Null
+)
+create table science (
+    id int primary key identity ,
+    name varchar(50) Null,
+    specialization varchar(50) Null,
+    gender varchar(50) Null,
+    birthdate date Null,
+    address varchar(50) Null
+)
+create table engineering(
+    id int primary key identity,
+    name varchar(50) Null,
+    specialization varchar(50)Null,
+    gender varchar(50) Null,
+    birthdate date Null,
+    Address varchar(50) Null
+)
+insert into unvirstyData (Faculty,freeSpace) values 
+("science",200),
+("Engineering",170)
+
+insert into engineering (name,specialization,gender,birthdate,address) values
+('abdo','android','male','2001-02-06','cairo'),
+('ahmed','CS','male','2001-02-06','cairo'),
+('sad','android','male','2000-02-06','cairo')
+
+insert into science (name,specialization,gender,birthdate,address) values
+('3adla','CS','male','2000-02-06','zifta')
+('samy','web','male','2001-02-06','cairo')
+
+begin transaction
+ insert into engineering values ('abdo','android','male','2001-02-06','cairo')
+ if(@@ERROR<>0)
+ rollback transaction
+ update unvirstyData set freeSpace=freeSpace-1 where Faculty ="Engineering"
+ if(@@ERROR <>0)
+ rollback transaction
+ if((select freeSpace from unvirstyData where Faculty=="Engineering")<0)
+ rollback transaction
+ commit transaction
+
+ begin transaction
+ insert into science values ('3adla','CS','male','2000-02-06','zifta')
+ if(@@ERROR<>0)
+ rollback transaction
+ update unvirstyData set freeSpace=freeSpace-1 where Faculty="science"
+ if(@@ERROR<>0)
+ rollback transaction
+ if((select freeSpace from unvirstyData where Faculty="science")<0)
+ rollback transaction
+ commit transaction
+
+ select *from unvirstyData
+ select *from science
+ select *from engineering
+

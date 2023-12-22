@@ -1,0 +1,28 @@
+-------views
+
+create viwe firstView
+as
+select salary,id from studint
+where id>5            --condition
+
+select *from firstView
+
+--------------------------------
+create view secView
+as 
+select studint.name,department.name
+from studint join department
+on studint.depId=department.id   --with relation
+
+select *from secView
+
+--------------------------------
+--delete view 
+drop view secView
+---------------------------------
+--schemabinding          --when edit in column show wrong message
+create view thirView with schemabinding
+as 
+select name from studint
+
+sleect *from thirView

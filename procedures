@@ -1,0 +1,50 @@
+-----------procedures----------------
+--select
+create proc getStudent
+as
+select name as StudintName from studint
+
+execute getStudent
+
+--insert
+create proc InsertDataStudint
+@name varchar(50),@salary int
+as 
+insert into studint(name,salary)values(@name,@salary)
+execute InsertDataStudint 'sad',233
+-----------------------------------------
+--update
+create proc updateStuding
+@name varchar(50),salary int,@id int
+as 
+update studint set name=@name,salary=@salary
+where id=@id
+execute UpdateStudint 'badr',500,10
+-----------------------------------------
+--delete
+create proc DeleteDataFromStudint
+@id int
+as 
+delete from studint
+where id=@id
+execute DeleteDataFromStudint 11
+-----------------------------------------
+---with condition
+create proc getStudintwithId
+@id int
+as 
+select *from studint
+where id =@id
+
+execute getStudintwithId 3
+---------------------------------------------
+--edit proc
+Alter proc getStudintwithId
+@id int=4
+as
+select *from studint
+where id=@id
+
+execute getStudintwithId
+-------------------------------------------------
+--

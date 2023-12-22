@@ -1,0 +1,45 @@
+
+ ---------join
+
+ create database company 
+ 
+ create table department(
+    id int identity,
+    depName varchar(40) Null,
+    primary key(id)
+ )
+ create table cource(
+    id int identity,
+    courceName varchar(50) Null,
+    primary key(id)
+ )
+ create table manger(
+    id int identity,
+    manName varchar(50) Null,
+    depId int,
+    courceId int,
+    foreign key(depId) REFERENCEs department(id),
+    foreign key(courceId) REFERENCES cource(id),
+    primary key(id)
+ )
+
+ --inner join
+--(join , left outer join,  right outer join , full outer join)
+
+ select depName , manName
+ from department , manger
+ where manger.depId=department.id
+  --------
+sele depName,manName
+from department join manger
+on manger.depId=department.id
+
+-----------------------------------------------------------
+--three join---------
+select manger.name,department.name,cource.name
+from manger join department 
+on manger.depId=department.id join cource
+on manger.courceId=cource.id
+------------------------------------------------------------
+
+

@@ -435,7 +435,7 @@ execute getStudintwithId 3
 
  
 
---------trigger----
+-------------
 --event =>action
 --create trigger Triggername on tableName
 --insert    of || --for || --- after  --action
